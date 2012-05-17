@@ -1,0 +1,9 @@
+# File types
+*.o
+*.so
+*.a
+*.swp
+
+# Directories
+sketchSynth/obj
+sketchSynth/bin

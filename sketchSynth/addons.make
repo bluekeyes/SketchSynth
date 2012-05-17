@@ -1,0 +1,3 @@
+ofxCv
+ofxOsc
+ofxXmlSettings
