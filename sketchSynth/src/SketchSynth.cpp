@@ -1,6 +1,6 @@
 #include "ofxXmlSettings.h"
 
-#include "PaperController.h"
+#include "SketchSynth.h"
 
 #include "ShapeUtils.h"
 
@@ -8,7 +8,7 @@ using namespace ofxCv;
 using namespace cv;
 
 //---------------------------------------------------------
-void PaperController::setup() {
+void SketchSynth::setup() {
     ofEnableSmoothing();
     ofBackground(0);
 
@@ -38,12 +38,12 @@ void PaperController::setup() {
 }
 
 //---------------------------------------------------------
-void PaperController::exit() {
+void SketchSynth::exit() {
     controlManager.getSender().sendStopAll();
 }
 
 //---------------------------------------------------------
-void PaperController::update() {
+void SketchSynth::update() {
     switch (state) {
         case EDIT:
             editUpdate();
@@ -61,7 +61,7 @@ void PaperController::update() {
 
 
 //---------------------------------------------------------
-void PaperController::setupUpdate() {
+void SketchSynth::setupUpdate() {
     paperCam.update();
 
     if (paperCam.isFrameNew()) {
@@ -77,13 +77,13 @@ void PaperController::setupUpdate() {
 }
 
 //---------------------------------------------------------
-void PaperController::editUpdate() {
+void SketchSynth::editUpdate() {
     paperCam.update();
 }
 
 
 //---------------------------------------------------------
-void PaperController::playUpdate() {
+void SketchSynth::playUpdate() {
     // Update the paper monitoring camera
     paperCam.update();
 
@@ -123,7 +123,7 @@ void PaperController::playUpdate() {
 
 
 //---------------------------------------------------------
-void PaperController::playMode() {
+void SketchSynth::playMode() {
     if (state == EDIT || state == SETUP) {
         // Reset and redetect controls
         controlManager.reset();
@@ -144,7 +144,7 @@ void PaperController::playMode() {
 
 
 //---------------------------------------------------------
-void PaperController::editMode() {
+void SketchSynth::editMode() {
     if (state == PLAY) {
         controlManager.getSender().sendStopAll();
     }
@@ -153,7 +153,7 @@ void PaperController::editMode() {
 
 
 //---------------------------------------------------------
-void PaperController::setupMode() {
+void SketchSynth::setupMode() {
     if (state == PLAY) {
         controlManager.getSender().sendStopAll();
     }
@@ -163,7 +163,7 @@ void PaperController::setupMode() {
 
 
 //---------------------------------------------------------
-void PaperController::draw() {
+void SketchSynth::draw() {
     switch (state) {
         case EDIT:
             editDraw();
@@ -180,7 +180,7 @@ void PaperController::draw() {
 }
 
 //---------------------------------------------------------
-void PaperController::infoDraw() {
+void SketchSynth::infoDraw() {
     int xp = padding / 2;
     int yp = padding;
 
@@ -249,7 +249,7 @@ void PaperController::infoDraw() {
 }
 
 //---------------------------------------------------------
-void PaperController::playDraw() {
+void SketchSynth::playDraw() {
     infoDraw();
 
     //----------------------------//
@@ -277,12 +277,12 @@ void PaperController::playDraw() {
 }
 
 //---------------------------------------------------------
-void PaperController::editDraw() {
+void SketchSynth::editDraw() {
     infoDraw();
 }
 
 //---------------------------------------------------------
-void PaperController::setupDraw() {
+void SketchSynth::setupDraw() {
     ofSetLineWidth(1);
     ofSetColor(255);
     paperCam.draw(0, 0);
@@ -327,14 +327,14 @@ void PaperController::setupDraw() {
 
 
 //---------------------------------------------------------
-void PaperController::resetProjectorAlignment() {
+void SketchSynth::resetProjectorAlignment() {
     projectorPoints.clear();
     toProjectorMatrix = Mat::eye(3, 3, CV_32F);
     alignmentComplete = false;
 }
 
 //---------------------------------------------------------
-bool PaperController::saveProjectorAlignment() {
+bool SketchSynth::saveProjectorAlignment() {
     if (projectorPoints.size() != 4) {
         return false;
     }
@@ -357,7 +357,7 @@ bool PaperController::saveProjectorAlignment() {
 }
 
 //---------------------------------------------------------
-bool PaperController::loadProjectorAlignment() {
+bool SketchSynth::loadProjectorAlignment() {
     ofxXmlSettings alignment;
     if (!alignment.loadFile("alignment.xml")) {
         return false;
@@ -386,7 +386,7 @@ bool PaperController::loadProjectorAlignment() {
 }
 
 //---------------------------------------------------------
-void PaperController::computeProjectorAlignment() {
+void SketchSynth::computeProjectorAlignment() {
     vector<Point2f> dstPoints(4);
     dstPoints[0] = Point2f(0, 0);
     dstPoints[1] = Point2f(projWidth, 0);
@@ -402,7 +402,7 @@ void PaperController::computeProjectorAlignment() {
 }
 
 //---------------------------------------------------------
-void PaperController::keyPressed(int key) {
+void SketchSynth::keyPressed(int key) {
     switch (key) {
         case 'e':
             editMode();
@@ -431,7 +431,7 @@ void PaperController::keyPressed(int key) {
 }
 
 //---------------------------------------------------------
-void PaperController::mousePressed(int x, int y, int button) {
+void SketchSynth::mousePressed(int x, int y, int button) {
     if (state == SETUP && projectorPoints.size() < 4) {
         projectorPoints.push_back(Point2f(x, y));
     }

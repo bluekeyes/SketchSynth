@@ -9,7 +9,7 @@
 
 enum AppState { PLAY, EDIT, SETUP };
 
-class PaperController : public ofBaseApp {
+class SketchSynth : public ofBaseApp {
     public:
         void setup();
         void update();
